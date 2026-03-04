@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- Fix setup.sh failing when only Xcode CommandLineTools is installed (#3)
+
 ### Added
 - Initial iOS app implementation (#1)
 - Browse 10 DoubleZero account types: Exchanges, Contributors, Locations, Devices, Links, Users, Multicast Groups, Tenants, Access Passes, Reservations

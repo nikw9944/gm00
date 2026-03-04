@@ -1,12 +1,16 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 echo "gm00 Development Setup"
 echo "======================"
 
-# Check Xcode
-if ! command -v xcodebuild &> /dev/null; then
-    echo "ERROR: Xcode is not installed. Install from the App Store."
+# Check that Xcode (not just CommandLineTools) is installed and functional
+if ! xcodebuild -version &> /dev/null; then
+    echo "ERROR: Xcode is not installed or not properly configured."
+    echo ""
+    echo "The active developer directory may point to CommandLineTools instead of Xcode."
+    echo "Install Xcode from the App Store, then run:"
+    echo "  sudo xcode-select -s /Applications/Xcode.app/Contents/Developer"
     exit 1
 fi
 
@@ -15,7 +19,7 @@ echo "Found: $XCODE_VERSION"
 
 # Check minimum version (Xcode 16+)
 MAJOR=$(echo "$XCODE_VERSION" | grep -o '[0-9]*' | head -1)
-if [ "$MAJOR" -lt 16 ]; then
+if [ -z "$MAJOR" ] || [ "$MAJOR" -lt 16 ]; then
     echo "ERROR: Xcode 16+ required. Found: $XCODE_VERSION"
     exit 1
 fi
