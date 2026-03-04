@@ -49,6 +49,8 @@
 		A100000040000000000000 /* StatusBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000040000000000000 /* StatusBadgeView.swift */; };
 		A100000041000000000000 /* AccountRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000041000000000000 /* AccountRowView.swift */; };
 		A100000042000000000000 /* IPAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000042000000000000 /* IPAddressView.swift */; };
+		A100000050000000000000 /* DetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000050000000000000 /* DetailSection.swift */; };
+		A100000051000000000000 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000051000000000000 /* DetailRow.swift */; };
 		A100000043000000000000 /* NetworkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000043000000000000 /* NetworkTypes.swift */; };
 		A100000044000000000000 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000044000000000000 /* Extensions.swift */; };
 		A100000045000000000000 /* BorshDecoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000045000000000000 /* BorshDecoderTests.swift */; };
@@ -114,6 +116,8 @@
 		A200000040000000000000 /* StatusBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadgeView.swift; sourceTree = "<group>"; };
 		A200000041000000000000 /* AccountRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRowView.swift; sourceTree = "<group>"; };
 		A200000042000000000000 /* IPAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPAddressView.swift; sourceTree = "<group>"; };
+		A200000050000000000000 /* DetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSection.swift; sourceTree = "<group>"; };
+		A200000051000000000000 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		A200000043000000000000 /* NetworkTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTypes.swift; sourceTree = "<group>"; };
 		A200000044000000000000 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A200000045000000000000 /* BorshDecoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorshDecoderTests.swift; sourceTree = "<group>"; };
@@ -260,6 +264,8 @@
 				A200000041000000000000 /* AccountRowView.swift */,
 				A200000042000000000000 /* IPAddressView.swift */,
 				A200000052000000000000 /* TelemetryChartView.swift */,
+				A200000050000000000000 /* DetailSection.swift */,
+				A200000051000000000000 /* DetailRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -434,6 +440,8 @@
 				A100000040000000000000 /* StatusBadgeView.swift in Sources */,
 				A100000041000000000000 /* AccountRowView.swift in Sources */,
 				A100000042000000000000 /* IPAddressView.swift in Sources */,
+				A100000050000000000000 /* DetailSection.swift in Sources */,
+				A100000051000000000000 /* DetailRow.swift in Sources */,
 				A100000043000000000000 /* NetworkTypes.swift in Sources */,
 				A100000044000000000000 /* Extensions.swift in Sources */,
 				A100000050000000000000 /* DeviceLatencySamples.swift in Sources */,
@@ -591,9 +599,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5762M7S9A8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -608,6 +617,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.doublezero.gm00;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -619,9 +629,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5762M7S9A8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -636,6 +647,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.doublezero.gm00;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -99,7 +99,7 @@ actor SolanaRPCClient {
         return requestId
     }
 
-    private func makeRequest(method: String, params: [[String: Any]]) async throws -> Any {
+    private func makeRequest(method: String, params: [Any]) async throws -> Any {
         let body: [String: Any] = [
             "jsonrpc": "2.0",
             "id": nextId(),
@@ -140,8 +140,8 @@ actor SolanaRPCClient {
     }
 
     func getAccountInfo(pubkey: String) async throws -> Data {
-        let params: [[String: Any]] = [
-            pubkey as Any,
+        let params: [Any] = [
+            pubkey,
             ["encoding": "base64"] as [String: Any]
         ]
 
@@ -159,8 +159,8 @@ actor SolanaRPCClient {
     }
 
     func getProgramAccounts(programId explicitProgramId: String, filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
-        let params: [[String: Any]] = [
-            explicitProgramId as Any,
+        let params: [Any] = [
+            explicitProgramId,
             [
                 "encoding": "base64",
                 "filters": filters
@@ -197,8 +197,8 @@ actor SolanaRPCClient {
         var allResults: [(pubkey: String, data: Data?)] = []
 
         for chunk in pubkeys.chunked(into: 100) {
-            let params: [[String: Any]] = [
-                chunk as Any,
+            let params: [Any] = [
+                chunk,
                 ["encoding": "base64"] as [String: Any]
             ]
 
