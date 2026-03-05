@@ -1,38 +1,21 @@
 import Foundation
+import os
 
 @MainActor
 class HomeViewModel: ObservableObject {
     @Published var accountTypes: [AccountTypeInfo] = AccountTypeInfo.browsableTypes
     @Published var accountCounts: [UInt8: Int] = [:]
-    @Published var isLoadingCounts: Bool = false
 
-    private var rpcClient: SolanaRPCClient?
+    private let logger = Logger(subsystem: "com.gm00", category: "HomeViewModel")
 
-    func updateClient(_ client: SolanaRPCClient) {
-        self.rpcClient = client
-    }
-
-    func loadCounts() async {
-        guard let client = rpcClient else { return }
-        isLoadingCounts = true
-        await withTaskGroup(of: (UInt8, Int?).self) { group in
-            for typeInfo in accountTypes {
-                let discriminator = typeInfo.id
-                group.addTask {
-                    do {
-                        let count = try await client.getAccountCountByType(discriminator)
-                        return (discriminator, count)
-                    } catch {
-                        return (discriminator, nil)
-                    }
-                }
-            }
-            for await (discriminator, count) in group {
-                if let count {
-                    accountCounts[discriminator] = count
-                }
-            }
+    func loadCounts(client: SolanaRPCClient) async {
+        accountCounts = [:]
+        do {
+            let counts = try await client.getAllAccountCounts()
+            guard !Task.isCancelled else { return }
+            accountCounts = counts
+        } catch {
+            logger.error("Failed to load account counts: \(error.localizedDescription)")
         }
-        isLoadingCounts = false
     }
 }

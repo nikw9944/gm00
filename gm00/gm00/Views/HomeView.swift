@@ -42,8 +42,7 @@ struct HomeView: View {
         }
         .navigationTitle("gm00")
         .task(id: settingsViewModel.displayEnvironment) {
-            homeViewModel.updateClient(settingsViewModel.createRPCClient())
-            await homeViewModel.loadCounts()
+            await homeViewModel.loadCounts(client: settingsViewModel.createRPCClient())
         }
     }
 }
@@ -57,17 +56,10 @@ struct AccountTypeCard: View {
             Image(systemName: typeInfo.icon)
                 .font(.title2)
                 .foregroundColor(.accentColor)
-            if let count {
-                Text("\(count) \(typeInfo.name)")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
-            } else {
-                Text(typeInfo.name)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
-            }
+            Text(count.map { "\($0) \(typeInfo.name)" } ?? typeInfo.name)
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
             Text(typeInfo.description)
                 .font(.caption2)
                 .foregroundColor(.secondary)
