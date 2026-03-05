@@ -9,6 +9,8 @@ struct DeviceDetailView: View {
     @State private var locationCode: String?
     @State private var exchangeCode: String?
     @State private var contributorCode: String?
+    @State private var users: [(pubkey: String, user: DZUser)] = []
+    @State private var isLoadingUsers = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -77,9 +79,31 @@ struct DeviceDetailView: View {
                     }
                 }
             }
+
+            DetailSection(title: "Users (\(users.count))") {
+                if isLoadingUsers {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                } else if users.isEmpty {
+                    Text("No users found")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                } else {
+                    ForEach(users, id: \.pubkey) { item in
+                        CodeLinkView(
+                            label: item.user.displayCode ?? item.user.clientIp,
+                            pubkey: item.pubkey,
+                            code: nil,
+                            navigationPath: $navigationPath
+                        )
+                    }
+                }
+            }
         }
         .task {
-            await loadRelatedCodes()
+            async let codesTask: () = loadRelatedCodes()
+            async let usersTask: () = loadUsers()
+            _ = await (codesTask, usersTask)
         }
     }
 
@@ -114,6 +138,27 @@ struct DeviceDetailView: View {
             }
         } catch {
             // Codes remain nil — falls back to truncated pubkey display
+        }
+    }
+
+    private func loadUsers() async {
+        isLoadingUsers = true
+        defer { isLoadingUsers = false }
+
+        let client = settingsViewModel.createRPCClient()
+        do {
+            let results = try await client.getUsersForDevice(pubkey: pubkey)
+            var decoded: [(pubkey: String, user: DZUser)] = []
+            for (pk, data) in results {
+                let decoder = BorshDecoder(data: data)
+                if var user = try? DZUser.decode(from: decoder) {
+                    user.pubkey = pk
+                    decoded.append((pubkey: pk, user: user))
+                }
+            }
+            users = decoded.sorted { $0.user.sortKey < $1.user.sortKey }
+        } catch {
+            // Silently fail — section shows "No users found"
         }
     }
 }

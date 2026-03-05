@@ -224,6 +224,14 @@ actor SolanaRPCClient {
         return allResults
     }
 
+    func getUsersForDevice(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.user]))] as [String: Any]],
+            ["memcmp": ["offset": 83, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
+    }
+
     func getDevicesForLocation(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
         let filters: [[String: Any]] = [
             ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.device]))] as [String: Any]],
