@@ -4,6 +4,8 @@ struct LinkDetailView: View {
     let pubkey: String
     let link: LinkAccount
     @Binding var navigationPath: NavigationPath
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @StateObject private var telemetryViewModel = LinkTelemetryViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -42,6 +44,19 @@ struct LinkDetailView: View {
                 DetailRow(label: "Delay Override", value: link.delayOverrideNs.formattedDelay)
             }
 
+            TelemetryChartsSection(viewModel: telemetryViewModel, onRetry: {
+                Task {
+                    let rpcClient = settingsViewModel.createRPCClient()
+                    await telemetryViewModel.loadTelemetry(
+                        linkPk: pubkey,
+                        sideAPk: link.sideAPk,
+                        sideZPk: link.sideZPk,
+                        rpcClient: rpcClient,
+                        cluster: settingsViewModel.selectedCluster
+                    )
+                }
+            })
+
             DetailSection(title: "Tunnel") {
                 DetailRow(label: "Tunnel ID", value: "\(link.tunnelId)")
                 DetailRow(label: "Tunnel Net", value: link.tunnelNet.description)
@@ -57,6 +72,16 @@ struct LinkDetailView: View {
             DetailSection(title: "Related Accounts") {
                 PubkeyLinkView(label: "Contributor", pubkey: link.contributorPk, navigationPath: $navigationPath)
             }
+        }
+        .task {
+            let rpcClient = settingsViewModel.createRPCClient()
+            await telemetryViewModel.loadTelemetry(
+                linkPk: pubkey,
+                sideAPk: link.sideAPk,
+                sideZPk: link.sideZPk,
+                rpcClient: rpcClient,
+                cluster: settingsViewModel.selectedCluster
+            )
         }
     }
 }

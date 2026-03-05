@@ -6,6 +6,7 @@ A native iOS app for browsing the DoubleZero ledger's serviceability program on 
 
 - **Browse 10 account types**: Exchanges, Contributors, Locations, Devices, Links, Users, Multicast Groups, Tenants, Access Passes, Reservations
 - **Detailed views**: See all on-chain data for each account with formatted displays
+- **Telemetry graphs**: View packet loss, round-trip time, and jitter charts on Link detail pages
 - **Cross-account navigation**: Tap linked pubkeys to jump to related accounts
 - **Full-text search**: Search across all account types by code, name, IP, or pubkey
 - **Multi-environment**: Switch between Devnet, Testnet, Mainnet-Beta, or custom RPC URL

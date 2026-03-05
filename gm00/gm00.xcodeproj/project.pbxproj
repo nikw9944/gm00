@@ -56,6 +56,9 @@
 		A100000047000000000000 /* ModelDeserializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000047000000000000 /* ModelDeserializationTests.swift */; };
 		A100000048000000000000 /* AccountResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000048000000000000 /* AccountResolverTests.swift */; };
 		A100000049000000000000 /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000049000000000000 /* SearchTests.swift */; };
+		A100000050000000000000 /* DeviceLatencySamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000050000000000000 /* DeviceLatencySamples.swift */; };
+		A100000051000000000000 /* LinkTelemetryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000051000000000000 /* LinkTelemetryViewModel.swift */; };
+		A100000052000000000000 /* TelemetryChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000052000000000000 /* TelemetryChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +121,9 @@
 		A200000047000000000000 /* ModelDeserializationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDeserializationTests.swift; sourceTree = "<group>"; };
 		A200000048000000000000 /* AccountResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountResolverTests.swift; sourceTree = "<group>"; };
 		A200000049000000000000 /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
+		A200000050000000000000 /* DeviceLatencySamples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLatencySamples.swift; sourceTree = "<group>"; };
+		A200000051000000000000 /* LinkTelemetryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTelemetryViewModel.swift; sourceTree = "<group>"; };
+		A200000052000000000000 /* TelemetryChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryChartView.swift; sourceTree = "<group>"; };
 		A600000001000000000000 /* gm00.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gm00.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A600000002000000000000 /* gm00Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gm00Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -186,6 +192,7 @@
 				A200000012000000000000 /* AccessPass.swift */,
 				A200000013000000000000 /* Reservation.swift */,
 				A200000014000000000000 /* Enums.swift */,
+				A200000050000000000000 /* DeviceLatencySamples.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -209,6 +216,7 @@
 				A200000021000000000000 /* AccountDetailViewModel.swift */,
 				A200000022000000000000 /* SearchViewModel.swift */,
 				A200000023000000000000 /* SettingsViewModel.swift */,
+				A200000051000000000000 /* LinkTelemetryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -251,6 +259,7 @@
 				A200000040000000000000 /* StatusBadgeView.swift */,
 				A200000041000000000000 /* AccountRowView.swift */,
 				A200000042000000000000 /* IPAddressView.swift */,
+				A200000052000000000000 /* TelemetryChartView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -427,6 +436,9 @@
 				A100000042000000000000 /* IPAddressView.swift in Sources */,
 				A100000043000000000000 /* NetworkTypes.swift in Sources */,
 				A100000044000000000000 /* Extensions.swift in Sources */,
+				A100000050000000000000 /* DeviceLatencySamples.swift in Sources */,
+				A100000051000000000000 /* LinkTelemetryViewModel.swift in Sources */,
+				A100000052000000000000 /* TelemetryChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
