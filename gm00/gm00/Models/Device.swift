@@ -161,7 +161,7 @@ extension DeviceAccount: BorshDecodable {
         let multicastUsersCount = try decoder.readU16()
         let maxUnicastUsers = try decoder.readU16()
         let maxMulticastUsers = try decoder.readU16()
-        let reservedSeats = try decoder.readU16()
+        let reservedSeats: UInt16 = decoder.remaining >= 2 ? try decoder.readU16() : 0
 
         return DeviceAccount(
             accountType: accountType, owner: owner, index: index,

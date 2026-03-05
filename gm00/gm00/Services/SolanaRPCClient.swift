@@ -9,9 +9,9 @@ enum SolanaCluster: String, CaseIterable, Identifiable {
 
     var url: URL {
         switch self {
-        case .devnet: return URL(string: "https://api.devnet.solana.com")!
-        case .testnet: return URL(string: "https://api.testnet.solana.com")!
-        case .mainnetBeta: return URL(string: "https://api.mainnet-beta.solana.com")!
+        case .devnet: return URL(string: "https://doublezerolocalnet.rpcpool.com/8a4fd3f4-0977-449f-88c7-63d4b0f10f16")!
+        case .testnet: return URL(string: "https://doublezerolocalnet.rpcpool.com/8a4fd3f4-0977-449f-88c7-63d4b0f10f16")!
+        case .mainnetBeta: return URL(string: "https://doublezero-mainnet-beta.rpcpool.com/db336024-e7a8-46b1-80e5-352dd77060ab")!
         }
     }
 
@@ -222,6 +222,22 @@ actor SolanaRPCClient {
         }
 
         return allResults
+    }
+
+    func getDevicesForLocation(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.device]))] as [String: Any]],
+            ["memcmp": ["offset": 50, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
+    }
+
+    func getDevicesForExchange(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.device]))] as [String: Any]],
+            ["memcmp": ["offset": 82, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
     }
 
     func getAccountsByType(_ accountType: UInt8) async throws -> [(pubkey: String, data: Data)] {

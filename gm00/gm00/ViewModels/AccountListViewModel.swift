@@ -9,6 +9,9 @@ class AccountListViewModel: ObservableObject {
     var rpcClient: SolanaRPCClient?
     var accountTypeInfo: AccountTypeInfo?
 
+    // Raw data cache for passing to detail views
+    private(set) var rawDataCache: [String: Data] = [:]
+
     // Caches for User composite code resolution
     private var deviceCodeCache: [String: (deviceCode: String, exchangePk: String)] = [:]
     private var exchangeCodeCache: [String: String] = [:]
@@ -22,13 +25,15 @@ class AccountListViewModel: ObservableObject {
             let rawAccounts = try await rpcClient.getAccountsByType(accountTypeInfo.id)
             var resolved: [ResolvedAccount] = []
             let resolver = AccountResolver(rpcClient: rpcClient)
+            rawDataCache.removeAll()
 
             for (pubkey, data) in rawAccounts {
                 do {
                     let account = try resolver.resolveFromData(pubkey: pubkey, data: data)
                     resolved.append(account)
+                    rawDataCache[pubkey] = data
                 } catch {
-                    // Skip accounts that fail to decode
+                    print("Failed to decode account \(pubkey): \(error)")
                     continue
                 }
             }
