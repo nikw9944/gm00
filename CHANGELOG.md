@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Home button in toolbar to jump back to home screen from any depth (#6)
+
 ### Fixed
 - Fix setup.sh failing when only Xcode CommandLineTools is installed (#3)
 

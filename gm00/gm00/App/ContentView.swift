@@ -33,6 +33,15 @@ struct ContentView: View {
                     }
                 }
                 .toolbar {
+                    if !navigationPath.isEmpty {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                navigationPath = NavigationPath()
+                            } label: {
+                                Image(systemName: "house")
+                            }
+                        }
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             showSettings = true
