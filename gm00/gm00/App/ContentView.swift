@@ -17,15 +17,6 @@ struct ContentView: View {
             HomeView(navigationPath: $navigationPath)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     destinationView(for: destination)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                Button {
-                                    navigationPath = NavigationPath()
-                                } label: {
-                                    Image(systemName: "house")
-                                }
-                            }
-                        }
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
