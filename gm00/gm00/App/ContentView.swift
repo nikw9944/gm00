@@ -16,21 +16,16 @@ struct ContentView: View {
         NavigationStack(path: $navigationPath) {
             HomeView(navigationPath: $navigationPath)
                 .navigationDestination(for: NavigationDestination.self) { destination in
-                    switch destination {
-                    case .accountList(let typeInfo):
-                        AccountListView(
-                            accountTypeInfo: typeInfo,
-                            navigationPath: $navigationPath
-                        )
-                    case .accountDetail(let pubkey, let accountData):
-                        AccountDetailView(
-                            pubkey: pubkey,
-                            preloadedData: accountData,
-                            navigationPath: $navigationPath
-                        )
-                    case .searchResults:
-                        SearchView(navigationPath: $navigationPath)
-                    }
+                    destinationView(for: destination)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    navigationPath = NavigationPath()
+                                } label: {
+                                    Image(systemName: "house")
+                                }
+                            }
+                        }
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -55,16 +50,24 @@ struct ContentView: View {
                     SettingsView()
                 }
         }
-        .toolbar {
-            if !navigationPath.isEmpty {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        navigationPath = NavigationPath()
-                    } label: {
-                        Image(systemName: "house")
-                    }
-                }
-            }
+    }
+
+    @ViewBuilder
+    private func destinationView(for destination: NavigationDestination) -> some View {
+        switch destination {
+        case .accountList(let typeInfo):
+            AccountListView(
+                accountTypeInfo: typeInfo,
+                navigationPath: $navigationPath
+            )
+        case .accountDetail(let pubkey, let accountData):
+            AccountDetailView(
+                pubkey: pubkey,
+                preloadedData: accountData,
+                navigationPath: $navigationPath
+            )
+        case .searchResults:
+            SearchView(navigationPath: $navigationPath)
         }
     }
 }

@@ -5,7 +5,7 @@ enum Base58 {
     private static let baseCount = UInt(alphabet.count) // 58
 
     static func encode(_ bytes: Data) -> String {
-        var bytes = Array(bytes)
+        let bytes = Array(bytes)
         var zerosCount = 0
         for b in bytes {
             if b != 0 { break }

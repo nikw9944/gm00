@@ -87,7 +87,7 @@ struct LinkDetailView: View {
                 cluster: settingsViewModel.selectedCluster
             )
             async let codesTask: () = loadRelatedCodes(rpcClient: rpcClient)
-            _ = await (try? telemetryTask, codesTask)
+            _ = await (telemetryTask, codesTask)
         }
     }
 
