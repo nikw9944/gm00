@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
     @Binding var navigationPath: NavigationPath
 
     private let columns = [
@@ -27,7 +28,10 @@ struct HomeView: View {
                         Button {
                             navigationPath.append(NavigationDestination.accountList(typeInfo))
                         } label: {
-                            AccountTypeCard(typeInfo: typeInfo)
+                            AccountTypeCard(
+                                typeInfo: typeInfo,
+                                count: homeViewModel.accountCounts[typeInfo.id]
+                            )
                         }
                         .buttonStyle(.plain)
                     }
@@ -37,21 +41,33 @@ struct HomeView: View {
             .padding(.vertical)
         }
         .navigationTitle("gm00")
+        .task(id: settingsViewModel.displayEnvironment) {
+            homeViewModel.updateClient(settingsViewModel.createRPCClient())
+            await homeViewModel.loadCounts()
+        }
     }
 }
 
 struct AccountTypeCard: View {
     let typeInfo: AccountTypeInfo
+    var count: Int?
 
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: typeInfo.icon)
                 .font(.title2)
                 .foregroundColor(.accentColor)
-            Text(typeInfo.name)
-                .font(.subheadline)
-                .fontWeight(.medium)
-                .foregroundColor(.primary)
+            if let count {
+                Text("\(count) \(typeInfo.name)")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+            } else {
+                Text(typeInfo.name)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+            }
             Text(typeInfo.description)
                 .font(.caption2)
                 .foregroundColor(.secondary)
