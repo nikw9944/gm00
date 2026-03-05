@@ -240,6 +240,15 @@ actor SolanaRPCClient {
         return try await getProgramAccounts(filters: filters)
     }
 
+    func getEpochInfo() async throws -> UInt64 {
+        let result = try await makeRequest(method: "getEpochInfo", params: [])
+        guard let resultDict = result as? [String: Any],
+              let epoch = resultDict["epoch"] as? UInt64 else {
+            throw RPCError.invalidResponse
+        }
+        return epoch
+    }
+
     func getAccountsByType(_ accountType: UInt8) async throws -> [(pubkey: String, data: Data)] {
         let filters: [[String: Any]] = [
             [

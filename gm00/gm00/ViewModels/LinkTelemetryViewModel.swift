@@ -34,12 +34,29 @@ class LinkTelemetryViewModel: ObservableObject {
                 return
             }
 
-            let filters: [[String: Any]] = [
+            let currentEpoch = try await rpcClient.getEpochInfo()
+
+            let baseFilters: [[String: Any]] = [
                 ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([TelemetryAccountTypeDiscriminator.deviceLatencySamples]))] as [String: Any]],
                 ["memcmp": ["offset": 169, "bytes": Base58.encode(linkPkBytes)] as [String: Any]]
             ]
 
-            let accounts = try await rpcClient.getProgramAccounts(programId: telemetryProgramId, filters: filters)
+            // Fetch current and previous epoch in parallel
+            let accounts = try await withThrowingTaskGroup(of: [(pubkey: String, data: Data)].self) { group in
+                for epoch in [currentEpoch, currentEpoch - 1] {
+                    let epochFilters = baseFilters + [
+                        ["memcmp": ["offset": 1, "bytes": Base58.encode(epochBytes(epoch))] as [String: Any]]
+                    ]
+                    group.addTask {
+                        try await rpcClient.getProgramAccounts(programId: telemetryProgramId, filters: epochFilters)
+                    }
+                }
+                var results: [(pubkey: String, data: Data)] = []
+                for try await batch in group {
+                    results.append(contentsOf: batch)
+                }
+                return results
+            }
 
             var allSamples: [DeviceLatencySamples] = []
             for (pubkey, data) in accounts {
@@ -55,6 +72,11 @@ class LinkTelemetryViewModel: ObservableObject {
             self.error = error.localizedDescription
             isLoading = false
         }
+    }
+
+    private func epochBytes(_ epoch: UInt64) -> Data {
+        var le = epoch.littleEndian
+        return Data(bytes: &le, count: 8)
     }
 
     private func processSamples(_ allSamples: [DeviceLatencySamples], sideAPk: String, sideZPk: String) {
