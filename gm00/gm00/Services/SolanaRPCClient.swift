@@ -257,6 +257,32 @@ actor SolanaRPCClient {
         return epoch
     }
 
+    func getAllAccountCounts() async throws -> [UInt8: Int] {
+        let params: [Any] = [
+            programId,
+            [
+                "encoding": "base64",
+                "dataSlice": ["offset": 0, "length": 1] as [String: Any]
+            ] as [String: Any]
+        ]
+        let result = try await makeRequest(method: "getProgramAccounts", params: params)
+        guard let accounts = result as? [[String: Any]] else {
+            throw RPCError.invalidResponse
+        }
+        var counts: [UInt8: Int] = [:]
+        for account in accounts {
+            guard let accountInfo = account["account"] as? [String: Any],
+                  let dataArray = accountInfo["data"] as? [Any],
+                  let base64String = dataArray.first as? String,
+                  let data = Data(base64Encoded: base64String),
+                  let discriminator = data.first else {
+                continue
+            }
+            counts[discriminator, default: 0] += 1
+        }
+        return counts
+    }
+
     func getAccountsByType(_ accountType: UInt8) async throws -> [(pubkey: String, data: Data)] {
         let filters: [[String: Any]] = [
             [

@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `DeviceLatencySamples` model for deserializing telemetry program accounts
 - Swift Charts-based visualization with directional series (A→Z, Z→A)
 - Home button in toolbar to jump back to home screen from any depth (#6)
+- Display account counts on each home screen card, e.g. "15 Exchanges", using a single RPC call (#7)
 
 ### Fixed
 - Fix setup.sh failing when only Xcode CommandLineTools is installed (#3)

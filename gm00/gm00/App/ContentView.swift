@@ -8,13 +8,14 @@ enum NavigationDestination: Hashable {
 
 struct ContentView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @StateObject private var homeViewModel = HomeViewModel()
     @State private var navigationPath = NavigationPath()
     @State private var showSettings = false
     @State private var showSearch = false
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            HomeView(navigationPath: $navigationPath)
+            HomeView(homeViewModel: homeViewModel, navigationPath: $navigationPath)
                 .navigationDestination(for: NavigationDestination.self) { destination in
                     destinationView(for: destination)
                 }
