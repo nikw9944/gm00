@@ -30,6 +30,14 @@ enum SolanaCluster: String, CaseIterable, Identifiable {
         case .mainnetBeta: return "Mainnet Beta"
         }
     }
+
+    var telemetryProgramId: String {
+        switch self {
+        case .devnet: return "C9xqH76NSm11pBS6maNnY163tWHT8Govww47uyEmSnoG"
+        case .testnet: return "3KogTMmVxc5eUHtjZnwm136H5P8tvPwVu4ufbGPvM7p1"
+        case .mainnetBeta: return "tE1exJ5VMyoC9ByZeSmgtNzJCFF74G9JAv338sJiqkC"
+        }
+    }
 }
 
 enum RPCError: Error, LocalizedError {
@@ -150,9 +158,9 @@ actor SolanaRPCClient {
         return data
     }
 
-    func getProgramAccounts(filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
+    func getProgramAccounts(programId explicitProgramId: String, filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
         let params: [[String: Any]] = [
-            programId as Any,
+            explicitProgramId as Any,
             [
                 "encoding": "base64",
                 "filters": filters
@@ -178,6 +186,10 @@ actor SolanaRPCClient {
         }
 
         return decoded
+    }
+
+    func getProgramAccounts(filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
+        try await getProgramAccounts(programId: programId, filters: filters)
     }
 
     func getMultipleAccounts(pubkeys: [String]) async throws -> [(pubkey: String, data: Data?)] {

@@ -18,6 +18,11 @@ enum AccountTypeDiscriminator {
     static let reservation: UInt8 = 14
 }
 
+enum TelemetryAccountTypeDiscriminator {
+    static let deviceLatencySamples: UInt8 = 3
+    static let internetLatencySamples: UInt8 = 4
+}
+
 struct AccountTypeInfo: Hashable, Identifiable {
     let id: UInt8
     let name: String
