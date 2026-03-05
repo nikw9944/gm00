@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Telemetry graphs on Link detail page showing packet loss, round-trip time, and jitter (#5)
 - `DeviceLatencySamples` model for deserializing telemetry program accounts
 - Swift Charts-based visualization with directional series (A→Z, Z→A)
+- Home button in toolbar to jump back to home screen from any depth (#6)
 
 ### Fixed
 - Fix setup.sh failing when only Xcode CommandLineTools is installed (#3)
