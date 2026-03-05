@@ -91,9 +91,9 @@ struct DeviceDetailView: View {
                 } else {
                     ForEach(users, id: \.pubkey) { item in
                         CodeLinkView(
-                            label: item.user.displayCode ?? item.user.clientIp,
+                            label: "Tunnel \(item.user.tunnelId)",
                             pubkey: item.pubkey,
-                            code: nil,
+                            code: item.user.dzIp,
                             navigationPath: $navigationPath
                         )
                     }
