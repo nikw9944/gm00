@@ -156,7 +156,7 @@ struct DeviceDetailView: View {
                     decoded.append((pubkey: pk, user: user))
                 }
             }
-            users = decoded.sorted { $0.user.sortKey < $1.user.sortKey }
+            users = decoded.sorted { $0.user.tunnelId < $1.user.tunnelId }
         } catch {
             // Silently fail — section shows "No users found"
         }
