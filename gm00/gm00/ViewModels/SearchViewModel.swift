@@ -75,7 +75,6 @@ class SearchViewModel: ObservableObject {
         case .contributor(let pk, let a): return "\(a.searchableText) \(pk)"
         case .tenant(let pk, let a): return "\(a.searchableText) \(pk)"
         case .accessPass(let pk, let a): return "\(a.searchableText) \(pk)"
-        case .reservation(let pk, let a): return "\(a.searchableText) \(pk)"
         }
     }
 }

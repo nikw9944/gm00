@@ -133,7 +133,6 @@ class AccountListViewModel: ObservableObject {
         case .contributor(_, let c): return c.code
         case .tenant(_, let t): return t.code
         case .accessPass(_, let a): return a.clientIp
-        case .reservation(_, let r): return r.clientIp
         }
     }
 }

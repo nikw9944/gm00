@@ -39,6 +39,5 @@ struct AccountTypeInfo: Hashable, Identifiable {
         AccountTypeInfo(id: AccountTypeDiscriminator.multicastGroup, name: "Multicast Groups", icon: "antenna.radiowaves.left.and.right", description: "Multicast groups"),
         AccountTypeInfo(id: AccountTypeDiscriminator.tenant, name: "Tenants", icon: "building", description: "Service tenants"),
         AccountTypeInfo(id: AccountTypeDiscriminator.accessPass, name: "Access Passes", icon: "key", description: "Access passes"),
-        AccountTypeInfo(id: AccountTypeDiscriminator.reservation, name: "Reservations", icon: "calendar.badge.clock", description: "Device reservations"),
     ]
 }

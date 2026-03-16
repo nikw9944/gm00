@@ -23,8 +23,6 @@ struct AccountRowView: View {
             tenantRow(tenant)
         case .accessPass(_, let ap):
             accessPassRow(ap)
-        case .reservation(_, let res):
-            reservationRow(res)
         }
     }
 
@@ -164,16 +162,4 @@ struct AccountRowView: View {
         }
     }
 
-    private func reservationRow(_ res: ReservationAccount) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(res.clientIp)
-                    .font(.headline)
-                Text("Device: \(res.devicePk.truncatedPubkey)")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            Spacer()
-        }
-    }
 }

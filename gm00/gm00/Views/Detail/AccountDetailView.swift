@@ -70,8 +70,6 @@ struct AccountDetailView: View {
             TenantDetailView(pubkey: pk, tenant: tenant, navigationPath: $navigationPath)
         case .accessPass(let pk, let ap):
             AccessPassDetailView(pubkey: pk, accessPass: ap, navigationPath: $navigationPath)
-        case .reservation(let pk, let res):
-            ReservationDetailView(pubkey: pk, reservation: res, navigationPath: $navigationPath)
         }
     }
 }
