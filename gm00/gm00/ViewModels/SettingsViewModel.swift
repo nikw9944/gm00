@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 class SettingsViewModel: ObservableObject {
-    @AppStorage("selectedCluster") private var selectedClusterRaw: String = SolanaCluster.devnet.rawValue
+    @AppStorage("selectedCluster") private var selectedClusterRaw: String = SolanaCluster.mainnetBeta.rawValue
     @AppStorage("customRPCURL") var customRPCURL: String = ""
     @AppStorage("customProgramId") var customProgramId: String = ""
     @AppStorage("useCustomRPC") var useCustomRPC: Bool = false

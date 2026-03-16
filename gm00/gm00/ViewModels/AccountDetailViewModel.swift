@@ -3,7 +3,7 @@ import Foundation
 @MainActor
 class AccountDetailViewModel: ObservableObject {
     @Published var resolvedAccount: ResolvedAccount?
-    @Published var isLoading = false
+    @Published var isLoading = true
     @Published var error: String?
     @Published var userDisplayCode: String?
 

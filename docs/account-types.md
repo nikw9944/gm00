@@ -22,7 +22,7 @@ This document describes all account types in the DoubleZero serviceability progr
 | 13 | Tenant | 13 |
 | 14 | Reservation | 14 |
 
-The app browses types 3-8, 10-11, 13-14 (10 browsable types).
+The app browses types 3-8, 10-11, 13 (9 browsable types). Reservation (14) accounts exist on-chain but are not browsable in this app.
 
 ## Location (Discriminator: 3)
 
@@ -207,6 +207,8 @@ Note: Tenant does NOT have an index field.
 | billing | TenantBillingConfig | Billing config |
 
 ## Reservation (Discriminator: 14)
+
+**Note**: Reservation accounts are no longer browsable in this app but still exist on-chain.
 
 | Field | Type | Description |
 |-------|------|-------------|

@@ -112,7 +112,7 @@ final class SearchTests: XCTestCase {
 
     func testAccountTypeInfoBrowsableTypes() {
         let types = AccountTypeInfo.browsableTypes
-        XCTAssertEqual(types.count, 10)
+        XCTAssertEqual(types.count, 9)
 
         let names = types.map { $0.name }
         XCTAssertTrue(names.contains("Exchanges"))
@@ -124,7 +124,6 @@ final class SearchTests: XCTestCase {
         XCTAssertTrue(names.contains("Multicast Groups"))
         XCTAssertTrue(names.contains("Tenants"))
         XCTAssertTrue(names.contains("Access Passes"))
-        XCTAssertTrue(names.contains("Reservations"))
     }
 
     func testEnumDisplayNames() {

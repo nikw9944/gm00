@@ -4,6 +4,13 @@ struct DeviceDetailView: View {
     let pubkey: String
     let device: DeviceAccount
     @Binding var navigationPath: NavigationPath
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
+
+    @State private var locationCode: String?
+    @State private var exchangeCode: String?
+    @State private var contributorCode: String?
+    @State private var users: [(pubkey: String, user: DZUser)] = []
+    @State private var isLoadingUsers = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -58,9 +65,9 @@ struct DeviceDetailView: View {
             }
 
             DetailSection(title: "Related Accounts") {
-                PubkeyLinkView(label: "Location", pubkey: device.locationPk, navigationPath: $navigationPath)
-                PubkeyLinkView(label: "Exchange", pubkey: device.exchangePk, navigationPath: $navigationPath)
-                PubkeyLinkView(label: "Contributor", pubkey: device.contributorPk, navigationPath: $navigationPath)
+                CodeLinkView(label: "Location", pubkey: device.locationPk, code: locationCode, navigationPath: $navigationPath)
+                CodeLinkView(label: "Exchange", pubkey: device.exchangePk, code: exchangeCode, navigationPath: $navigationPath)
+                CodeLinkView(label: "Contributor", pubkey: device.contributorPk, code: contributorCode, navigationPath: $navigationPath)
                 PubkeyLinkView(label: "Metrics Publisher", pubkey: device.metricsPublisherPk, navigationPath: $navigationPath)
             }
 
@@ -72,6 +79,86 @@ struct DeviceDetailView: View {
                     }
                 }
             }
+
+            DetailSection(title: "Users (\(users.count))") {
+                if isLoadingUsers {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                } else if users.isEmpty {
+                    Text("No users found")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                } else {
+                    ForEach(users, id: \.pubkey) { item in
+                        CodeLinkView(
+                            label: "Tunnel \(item.user.tunnelId)",
+                            pubkey: item.pubkey,
+                            code: item.user.dzIp,
+                            navigationPath: $navigationPath
+                        )
+                    }
+                }
+            }
+        }
+        .task {
+            async let codesTask: () = loadRelatedCodes()
+            async let usersTask: () = loadUsers()
+            _ = await (codesTask, usersTask)
+        }
+    }
+
+    private func loadRelatedCodes() async {
+        let client = settingsViewModel.createRPCClient()
+        let pubkeys = [device.locationPk, device.exchangePk, device.contributorPk]
+        let validPubkeys = pubkeys.filter { !$0.allSatisfy { $0 == "1" } }
+
+        guard !validPubkeys.isEmpty else { return }
+
+        do {
+            let results = try await client.getMultipleAccounts(pubkeys: validPubkeys)
+            let lookup = Dictionary(uniqueKeysWithValues: results.map { ($0.pubkey, $0.data) })
+
+            if let data = lookup[device.locationPk] ?? nil {
+                let decoder = BorshDecoder(data: data)
+                if let loc = try? LocationAccount.decode(from: decoder) {
+                    locationCode = loc.code
+                }
+            }
+            if let data = lookup[device.exchangePk] ?? nil {
+                let decoder = BorshDecoder(data: data)
+                if let ex = try? ExchangeAccount.decode(from: decoder) {
+                    exchangeCode = ex.code
+                }
+            }
+            if let data = lookup[device.contributorPk] ?? nil {
+                let decoder = BorshDecoder(data: data)
+                if let contrib = try? ContributorAccount.decode(from: decoder) {
+                    contributorCode = contrib.code
+                }
+            }
+        } catch {
+            // Codes remain nil — falls back to truncated pubkey display
+        }
+    }
+
+    private func loadUsers() async {
+        isLoadingUsers = true
+        defer { isLoadingUsers = false }
+
+        let client = settingsViewModel.createRPCClient()
+        do {
+            let results = try await client.getUsersForDevice(pubkey: pubkey)
+            var decoded: [(pubkey: String, user: DZUser)] = []
+            for (pk, data) in results {
+                let decoder = BorshDecoder(data: data)
+                if var user = try? DZUser.decode(from: decoder) {
+                    user.pubkey = pk
+                    decoded.append((pubkey: pk, user: user))
+                }
+            }
+            users = decoded.sorted { $0.user.tunnelId < $1.user.tunnelId }
+        } catch {
+            // Silently fail — section shows "No users found"
         }
     }
 }

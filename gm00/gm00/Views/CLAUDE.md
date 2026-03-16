@@ -15,8 +15,7 @@ ContentView (NavigationStack root)
 │   ├── MulticastGroupDetailView
 │   ├── ContributorDetailView
 │   ├── TenantDetailView
-│   ├── AccessPassDetailView
-│   └── ReservationDetailView
+│   └── AccessPassDetailView
 ├── SearchView — Cross-type search
 └── SettingsView — Environment selector (sheet)
 ```

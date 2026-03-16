@@ -18,6 +18,11 @@ enum AccountTypeDiscriminator {
     static let reservation: UInt8 = 14
 }
 
+enum TelemetryAccountTypeDiscriminator {
+    static let deviceLatencySamples: UInt8 = 3
+    static let internetLatencySamples: UInt8 = 4
+}
+
 struct AccountTypeInfo: Hashable, Identifiable {
     let id: UInt8
     let name: String
@@ -34,6 +39,5 @@ struct AccountTypeInfo: Hashable, Identifiable {
         AccountTypeInfo(id: AccountTypeDiscriminator.multicastGroup, name: "Multicast Groups", icon: "antenna.radiowaves.left.and.right", description: "Multicast groups"),
         AccountTypeInfo(id: AccountTypeDiscriminator.tenant, name: "Tenants", icon: "building", description: "Service tenants"),
         AccountTypeInfo(id: AccountTypeDiscriminator.accessPass, name: "Access Passes", icon: "key", description: "Access passes"),
-        AccountTypeInfo(id: AccountTypeDiscriminator.reservation, name: "Reservations", icon: "calendar.badge.clock", description: "Device reservations"),
     ]
 }

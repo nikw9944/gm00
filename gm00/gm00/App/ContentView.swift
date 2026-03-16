@@ -8,29 +8,16 @@ enum NavigationDestination: Hashable {
 
 struct ContentView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @StateObject private var homeViewModel = HomeViewModel()
     @State private var navigationPath = NavigationPath()
     @State private var showSettings = false
     @State private var showSearch = false
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            HomeView(navigationPath: $navigationPath)
+            HomeView(homeViewModel: homeViewModel, navigationPath: $navigationPath)
                 .navigationDestination(for: NavigationDestination.self) { destination in
-                    switch destination {
-                    case .accountList(let typeInfo):
-                        AccountListView(
-                            accountTypeInfo: typeInfo,
-                            navigationPath: $navigationPath
-                        )
-                    case .accountDetail(let pubkey, let accountData):
-                        AccountDetailView(
-                            pubkey: pubkey,
-                            preloadedData: accountData,
-                            navigationPath: $navigationPath
-                        )
-                    case .searchResults:
-                        SearchView(navigationPath: $navigationPath)
-                    }
+                    destinationView(for: destination)
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -54,6 +41,25 @@ struct ContentView: View {
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
                 }
+        }
+    }
+
+    @ViewBuilder
+    private func destinationView(for destination: NavigationDestination) -> some View {
+        switch destination {
+        case .accountList(let typeInfo):
+            AccountListView(
+                accountTypeInfo: typeInfo,
+                navigationPath: $navigationPath
+            )
+        case .accountDetail(let pubkey, let accountData):
+            AccountDetailView(
+                pubkey: pubkey,
+                preloadedData: accountData,
+                navigationPath: $navigationPath
+            )
+        case .searchResults:
+            SearchView(navigationPath: $navigationPath)
         }
     }
 }

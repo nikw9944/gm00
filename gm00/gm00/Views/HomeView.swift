@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
     @Binding var navigationPath: NavigationPath
 
     private let columns = [
@@ -27,7 +28,10 @@ struct HomeView: View {
                         Button {
                             navigationPath.append(NavigationDestination.accountList(typeInfo))
                         } label: {
-                            AccountTypeCard(typeInfo: typeInfo)
+                            AccountTypeCard(
+                                typeInfo: typeInfo,
+                                count: homeViewModel.accountCounts[typeInfo.id]
+                            )
                         }
                         .buttonStyle(.plain)
                     }
@@ -37,18 +41,22 @@ struct HomeView: View {
             .padding(.vertical)
         }
         .navigationTitle("gm00")
+        .task(id: settingsViewModel.displayEnvironment) {
+            await homeViewModel.loadCounts(client: settingsViewModel.createRPCClient())
+        }
     }
 }
 
 struct AccountTypeCard: View {
     let typeInfo: AccountTypeInfo
+    var count: Int?
 
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: typeInfo.icon)
                 .font(.title2)
                 .foregroundColor(.accentColor)
-            Text(typeInfo.name)
+            Text(count.map { "\($0) \(typeInfo.name)" } ?? typeInfo.name)
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundColor(.primary)

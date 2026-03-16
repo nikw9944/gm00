@@ -9,9 +9,9 @@ enum SolanaCluster: String, CaseIterable, Identifiable {
 
     var url: URL {
         switch self {
-        case .devnet: return URL(string: "https://api.devnet.solana.com")!
-        case .testnet: return URL(string: "https://api.testnet.solana.com")!
-        case .mainnetBeta: return URL(string: "https://api.mainnet-beta.solana.com")!
+        case .devnet: return URL(string: "https://doublezerolocalnet.rpcpool.com/8a4fd3f4-0977-449f-88c7-63d4b0f10f16")!
+        case .testnet: return URL(string: "https://doublezerolocalnet.rpcpool.com/8a4fd3f4-0977-449f-88c7-63d4b0f10f16")!
+        case .mainnetBeta: return URL(string: "https://doublezero-mainnet-beta.rpcpool.com/db336024-e7a8-46b1-80e5-352dd77060ab")!
         }
     }
 
@@ -28,6 +28,14 @@ enum SolanaCluster: String, CaseIterable, Identifiable {
         case .devnet: return "Devnet"
         case .testnet: return "Testnet"
         case .mainnetBeta: return "Mainnet Beta"
+        }
+    }
+
+    var telemetryProgramId: String {
+        switch self {
+        case .devnet: return "C9xqH76NSm11pBS6maNnY163tWHT8Govww47uyEmSnoG"
+        case .testnet: return "3KogTMmVxc5eUHtjZnwm136H5P8tvPwVu4ufbGPvM7p1"
+        case .mainnetBeta: return "tE1exJ5VMyoC9ByZeSmgtNzJCFF74G9JAv338sJiqkC"
         }
     }
 }
@@ -91,7 +99,7 @@ actor SolanaRPCClient {
         return requestId
     }
 
-    private func makeRequest(method: String, params: [[String: Any]]) async throws -> Any {
+    private func makeRequest(method: String, params: [Any]) async throws -> Any {
         let body: [String: Any] = [
             "jsonrpc": "2.0",
             "id": nextId(),
@@ -132,8 +140,8 @@ actor SolanaRPCClient {
     }
 
     func getAccountInfo(pubkey: String) async throws -> Data {
-        let params: [[String: Any]] = [
-            pubkey as Any,
+        let params: [Any] = [
+            pubkey,
             ["encoding": "base64"] as [String: Any]
         ]
 
@@ -150,9 +158,9 @@ actor SolanaRPCClient {
         return data
     }
 
-    func getProgramAccounts(filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
-        let params: [[String: Any]] = [
-            programId as Any,
+    func getProgramAccounts(programId explicitProgramId: String, filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
+        let params: [Any] = [
+            explicitProgramId,
             [
                 "encoding": "base64",
                 "filters": filters
@@ -180,13 +188,17 @@ actor SolanaRPCClient {
         return decoded
     }
 
+    func getProgramAccounts(filters: [[String: Any]] = []) async throws -> [(pubkey: String, data: Data)] {
+        try await getProgramAccounts(programId: programId, filters: filters)
+    }
+
     func getMultipleAccounts(pubkeys: [String]) async throws -> [(pubkey: String, data: Data?)] {
         // Solana limits getMultipleAccounts to 100 per call
         var allResults: [(pubkey: String, data: Data?)] = []
 
         for chunk in pubkeys.chunked(into: 100) {
-            let params: [[String: Any]] = [
-                chunk as Any,
+            let params: [Any] = [
+                chunk,
                 ["encoding": "base64"] as [String: Any]
             ]
 
@@ -210,6 +222,65 @@ actor SolanaRPCClient {
         }
 
         return allResults
+    }
+
+    func getUsersForDevice(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.user]))] as [String: Any]],
+            ["memcmp": ["offset": 83, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
+    }
+
+    func getDevicesForLocation(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.device]))] as [String: Any]],
+            ["memcmp": ["offset": 50, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
+    }
+
+    func getDevicesForExchange(pubkey: String) async throws -> [(pubkey: String, data: Data)] {
+        let filters: [[String: Any]] = [
+            ["memcmp": ["offset": 0, "bytes": Base58.encode(Data([AccountTypeDiscriminator.device]))] as [String: Any]],
+            ["memcmp": ["offset": 82, "bytes": pubkey] as [String: Any]]
+        ]
+        return try await getProgramAccounts(filters: filters)
+    }
+
+    func getEpochInfo() async throws -> UInt64 {
+        let result = try await makeRequest(method: "getEpochInfo", params: [])
+        guard let resultDict = result as? [String: Any],
+              let epoch = resultDict["epoch"] as? UInt64 else {
+            throw RPCError.invalidResponse
+        }
+        return epoch
+    }
+
+    func getAllAccountCounts() async throws -> [UInt8: Int] {
+        let params: [Any] = [
+            programId,
+            [
+                "encoding": "base64",
+                "dataSlice": ["offset": 0, "length": 1] as [String: Any]
+            ] as [String: Any]
+        ]
+        let result = try await makeRequest(method: "getProgramAccounts", params: params)
+        guard let accounts = result as? [[String: Any]] else {
+            throw RPCError.invalidResponse
+        }
+        var counts: [UInt8: Int] = [:]
+        for account in accounts {
+            guard let accountInfo = account["account"] as? [String: Any],
+                  let dataArray = accountInfo["data"] as? [Any],
+                  let base64String = dataArray.first as? String,
+                  let data = Data(base64Encoded: base64String),
+                  let discriminator = data.first else {
+                continue
+            }
+            counts[discriminator, default: 0] += 1
+        }
+        return counts
     }
 
     func getAccountsByType(_ accountType: UInt8) async throws -> [(pubkey: String, data: Data)] {

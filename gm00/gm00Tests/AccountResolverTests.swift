@@ -33,7 +33,7 @@ final class AccountResolverTests: XCTestCase {
         }
     }
 
-    func testResolveReservationFromData() throws {
+    func testResolveReservationThrowsUnsupported() throws {
         var data = Data()
         data.append(AccountTypeDiscriminator.reservation)
         data.append(Data(repeating: 1, count: 32)) // owner
@@ -42,14 +42,7 @@ final class AccountResolverTests: XCTestCase {
         data.append(Data([192, 168, 1, 1])) // client_ip
 
         let resolver = AccountResolver(rpcClient: SolanaRPCClient(cluster: .devnet))
-        let result = try resolver.resolveFromData(pubkey: "ResPubkey", data: data)
-
-        if case .reservation(let pk, let res) = result {
-            XCTAssertEqual(pk, "ResPubkey")
-            XCTAssertEqual(res.clientIp, "192.168.1.1")
-        } else {
-            XCTFail("Expected reservation account")
-        }
+        XCTAssertThrowsError(try resolver.resolveFromData(pubkey: "ResPubkey", data: data))
     }
 
     func testResolveUnknownDiscriminator() throws {

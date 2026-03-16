@@ -55,3 +55,17 @@ xcodebuild -scheme gm00 -destination 'platform=iOS Simulator,name=iPhone 16' tes
 | Devnet | `GYhQDKuESrasNZGyhMJhGYFtbzNijYhcrN9poSqCQVah` |
 | Testnet | `DZtnuQ839pSaDMFG5q1ad2V95G82S5EC4RrB3Ndw2Heb` |
 | Mainnet | `ser2VaTMAcYTaauMrTSfSrxBaUDq7BLNs2xfUugTAGv` |
+
+## Telemetry Program IDs
+
+| Cluster | Telemetry Program ID |
+|---------|---------------------|
+| Devnet | `C9xqH76NSm11pBS6maNnY163tWHT8Govww47uyEmSnoG` |
+| Testnet | `3KogTMmVxc5eUHtjZnwm136H5P8tvPwVu4ufbGPvM7p1` |
+| Mainnet | `tE1exJ5VMyoC9ByZeSmgtNzJCFF74G9JAv338sJiqkC` |
+
+## Telemetry Visualization
+
+- Swift Charts framework is used for telemetry graphs on the Link detail page
+- `DeviceLatencySamples` accounts are fetched from the telemetry program (separate from serviceability)
+- Graphs show packet loss, RTT, and jitter with directional series (A→Z, Z→A)

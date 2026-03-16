@@ -44,7 +44,7 @@ struct AccountListView: View {
                     Button {
                         navigationPath.append(NavigationDestination.accountDetail(
                             pubkey: account.pubkey,
-                            accountData: nil
+                            accountData: viewModel.rawDataCache[account.pubkey]
                         ))
                     } label: {
                         AccountRowView(account: account)
