@@ -109,25 +109,6 @@ final class ModelDeserializationTests: XCTestCase {
         XCTAssertEqual(contrib.referenceCount, 10)
     }
 
-    private func buildReservationData() -> Data {
-        var data = Data()
-        data.append(AccountTypeDiscriminator.reservation)
-        data.append(Data(repeating: 1, count: 32)) // owner
-        data.append(0) // bump_seed
-        data.append(Data(repeating: 5, count: 32)) // device_pk
-        data.append(Data([10, 0, 1, 50])) // client_ip
-        return data
-    }
-
-    func testDecodeReservation() throws {
-        let data = buildReservationData()
-        let decoder = BorshDecoder(data: data)
-        let res = try ReservationAccount.decode(from: decoder)
-
-        XCTAssertEqual(res.accountType, AccountTypeDiscriminator.reservation)
-        XCTAssertEqual(res.clientIp, "10.0.1.50")
-    }
-
     func testDecodeMulticastGroup() throws {
         var data = Data()
         data.append(AccountTypeDiscriminator.multicastGroup)

@@ -19,7 +19,6 @@
 		A100000010000000000000 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000010000000000000 /* Contributor.swift */; };
 		A100000011000000000000 /* Tenant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000011000000000000 /* Tenant.swift */; };
 		A100000012000000000000 /* AccessPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000012000000000000 /* AccessPass.swift */; };
-		A100000013000000000000 /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000013000000000000 /* Reservation.swift */; };
 		A100000014000000000000 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000014000000000000 /* Enums.swift */; };
 		A100000015000000000000 /* SolanaRPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000015000000000000 /* SolanaRPCClient.swift */; };
 		A100000016000000000000 /* BorshDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000016000000000000 /* BorshDecoder.swift */; };
@@ -44,7 +43,6 @@
 		A100000035000000000000 /* ContributorDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000035000000000000 /* ContributorDetailView.swift */; };
 		A100000036000000000000 /* TenantDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000036000000000000 /* TenantDetailView.swift */; };
 		A100000037000000000000 /* AccessPassDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000037000000000000 /* AccessPassDetailView.swift */; };
-		A100000038000000000000 /* ReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000038000000000000 /* ReservationDetailView.swift */; };
 		A100000039000000000000 /* PubkeyLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000039000000000000 /* PubkeyLinkView.swift */; };
 		A100000040000000000000 /* StatusBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000040000000000000 /* StatusBadgeView.swift */; };
 		A100000041000000000000 /* AccountRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000041000000000000 /* AccountRowView.swift */; };
@@ -88,7 +86,6 @@
 		A200000010000000000000 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		A200000011000000000000 /* Tenant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tenant.swift; sourceTree = "<group>"; };
 		A200000012000000000000 /* AccessPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPass.swift; sourceTree = "<group>"; };
-		A200000013000000000000 /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
 		A200000014000000000000 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		A200000015000000000000 /* SolanaRPCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolanaRPCClient.swift; sourceTree = "<group>"; };
 		A200000016000000000000 /* BorshDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorshDecoder.swift; sourceTree = "<group>"; };
@@ -113,7 +110,6 @@
 		A200000035000000000000 /* ContributorDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorDetailView.swift; sourceTree = "<group>"; };
 		A200000036000000000000 /* TenantDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TenantDetailView.swift; sourceTree = "<group>"; };
 		A200000037000000000000 /* AccessPassDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessPassDetailView.swift; sourceTree = "<group>"; };
-		A200000038000000000000 /* ReservationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDetailView.swift; sourceTree = "<group>"; };
 		A200000039000000000000 /* PubkeyLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubkeyLinkView.swift; sourceTree = "<group>"; };
 		A200000040000000000000 /* StatusBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadgeView.swift; sourceTree = "<group>"; };
 		A200000041000000000000 /* AccountRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRowView.swift; sourceTree = "<group>"; };
@@ -199,7 +195,6 @@
 				A200000010000000000000 /* Contributor.swift */,
 				A200000011000000000000 /* Tenant.swift */,
 				A200000012000000000000 /* AccessPass.swift */,
-				A200000013000000000000 /* Reservation.swift */,
 				A200000014000000000000 /* Enums.swift */,
 				A200000050000000000000 /* DeviceLatencySamples.swift */,
 			);
@@ -256,7 +251,6 @@
 				A200000035000000000000 /* ContributorDetailView.swift */,
 				A200000036000000000000 /* TenantDetailView.swift */,
 				A200000037000000000000 /* AccessPassDetailView.swift */,
-				A200000038000000000000 /* ReservationDetailView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -417,7 +411,6 @@
 				A100000010000000000000 /* Contributor.swift in Sources */,
 				A100000011000000000000 /* Tenant.swift in Sources */,
 				A100000012000000000000 /* AccessPass.swift in Sources */,
-				A100000013000000000000 /* Reservation.swift in Sources */,
 				A100000014000000000000 /* Enums.swift in Sources */,
 				A100000015000000000000 /* SolanaRPCClient.swift in Sources */,
 				A100000016000000000000 /* BorshDecoder.swift in Sources */,
@@ -442,7 +435,6 @@
 				A100000035000000000000 /* ContributorDetailView.swift in Sources */,
 				A100000036000000000000 /* TenantDetailView.swift in Sources */,
 				A100000037000000000000 /* AccessPassDetailView.swift in Sources */,
-				A100000038000000000000 /* ReservationDetailView.swift in Sources */,
 				A100000039000000000000 /* PubkeyLinkView.swift in Sources */,
 				A100000040000000000000 /* StatusBadgeView.swift in Sources */,
 				A100000041000000000000 /* AccountRowView.swift in Sources */,

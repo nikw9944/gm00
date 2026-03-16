@@ -10,7 +10,6 @@ enum ResolvedAccount {
     case contributor(String, ContributorAccount)
     case tenant(String, TenantAccount)
     case accessPass(String, AccessPassAccount)
-    case reservation(String, ReservationAccount)
 
     var typeName: String {
         switch self {
@@ -23,7 +22,6 @@ enum ResolvedAccount {
         case .contributor: return "Contributor"
         case .tenant: return "Tenant"
         case .accessPass: return "Access Pass"
-        case .reservation: return "Reservation"
         }
     }
 
@@ -38,7 +36,6 @@ enum ResolvedAccount {
         case .contributor(let pk, _): return pk
         case .tenant(let pk, _): return pk
         case .accessPass(let pk, _): return pk
-        case .reservation(let pk, _): return pk
         }
     }
 }
@@ -84,7 +81,7 @@ class AccountResolver {
         case AccountTypeDiscriminator.accessPass:
             return .accessPass(pubkey, try AccessPassAccount.decode(from: decoder))
         case AccountTypeDiscriminator.reservation:
-            return .reservation(pubkey, try ReservationAccount.decode(from: decoder))
+            throw RPCError.decodingError("Reservation accounts are not supported in this version")
         default:
             throw RPCError.decodingError("Unknown account type discriminator: \(discriminator)")
         }
