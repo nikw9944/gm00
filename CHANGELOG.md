@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Contributor detail view lists associated devices, users on those devices, and links (#15)
 - Telemetry graphs on Link detail page showing packet loss, round-trip time, and jitter (#5)
 - `DeviceLatencySamples` model for deserializing telemetry program accounts
 - Swift Charts-based visualization with directional series (A→Z, Z→A)
